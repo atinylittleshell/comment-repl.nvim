@@ -147,8 +147,6 @@ log.new = function(config, standalone)
     end
   end
 end
-
-log.new(default_config, true)
 -- }}}
 
 return log

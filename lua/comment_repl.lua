@@ -9,8 +9,8 @@ local M = {}
 M.setup = function(args)
   config = vim.tbl_deep_extend("force", config, args or {})
 
-  local supported_repls = table.concat(vim.tbl_keys(config.repls), ",")
-  log.fmt_info("Setting up comment-repl.nvim for: %s", supported_repls)
+  log.new(config.log, true)
+  log.fmt_info("Setting up comment-repl.nvim:\n%s", config)
 
   local autocmds = vim.api.nvim_create_augroup("CommentREPL", { clear = true })
 
