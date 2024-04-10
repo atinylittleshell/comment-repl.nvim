@@ -1,4 +1,4 @@
-*comment_repl_docs.txt*     For Neovim >= 0.8.0     Last change: 2024 April 08
+*comment_repl_docs.txt*     For Neovim >= 0.8.0     Last change: 2024 April 10
 
 ==============================================================================
 Table of Contents                        *comment_repl_docs-table-of-contents*
