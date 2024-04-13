@@ -7,7 +7,7 @@ Execute code directly from your buffer and print the output as a comment.
 
 ## How does it work
 
-[Screenshot](doc/screenshot.png)
+[Screenshot](doc/screenshot.png?raw=true)
 
 ## Installation
 
