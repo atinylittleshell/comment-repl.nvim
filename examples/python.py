@@ -1,16 +1,23 @@
-i = 30
-print(i)
+def fibonacci_below(n):
+    a, b = 0, 1
+    while a < n:
+        print(a, end=" ")
+        a, b = b, a + b
+
+
+fibonacci_below(5)
 
 
 """
-30
+0 1 1 2 3 
 """
 
 # %%
-j = {"hello", "world"}
-print(j)
+# The marker above separates the code below into a different cell
+
+fibonacci_below(10)
 
 
 """
-{'world', 'hello'}
+0 1 1 2 3 5 8 
 """
