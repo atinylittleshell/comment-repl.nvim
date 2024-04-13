@@ -1,4 +1,5 @@
 local log = require("comment_repl.log")
+local core = require("comment_repl.core")
 
 ---@class LanguageConfig
 ---@field display string
@@ -13,7 +14,7 @@ local M = {}
 
 ---@class REPLInstance
 ---@field bufnr number
----@field output_cursor table<number, number>|nil
+---@field output_extmark number|nil
 ---@field config LanguageConfig
 ---@field process uv_process_t
 ---@field stdin uv_pipe_t
@@ -50,7 +51,7 @@ M.start = function(bufnr, repl_config)
 
   instance = {
     bufnr = bufnr,
-    output_cursor = nil,
+    output_extmark = nil,
     config = repl_config,
     process = process,
     stdin = stdin,
@@ -60,12 +61,33 @@ M.start = function(bufnr, repl_config)
   buf_to_repl[bufnr] = instance
 
   stdout:read_start(function(_, data)
-    log.fmt_trace("%s REPL received output: %s", repl_config.display, data)
-    if data and instance.output_cursor then
-      local line = instance.output_cursor[1]
-      local col = instance.output_cursor[2]
-      vim.api.nvim_buf_set_text(bufnr, line - 1, col, line - 1, col, { data })
+    log.fmt_trace("%s REPL received output:\n%s", repl_config.display, data)
+
+    -- ensure trailing new line
+    local data_len = string.len(data)
+    if data_len > 0 and string.sub(data, data_len, data_len) ~= "\n" then
+      data = data .. "\n"
     end
+
+    local lines = {}
+    for line in string.gmatch(data, "([^\n]*)\n") do
+      table.insert(lines, line)
+    end
+
+    if #lines == 0 or instance.output_extmark == nil then
+      return
+    end
+
+    vim.schedule(function()
+      local extmark = vim.api.nvim_buf_get_extmark_by_id(
+        bufnr,
+        core.comment_repl_extmark_ns,
+        instance.output_extmark,
+        {}
+      )
+      assert(extmark)
+      vim.api.nvim_buf_set_text(bufnr, extmark[1], extmark[2], extmark[1], extmark[2], lines)
+    end)
   end)
 
   return instance

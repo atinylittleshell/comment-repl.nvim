@@ -3,14 +3,14 @@ print(i)
 
 
 """
-
+30
 """
 
 # %%
-j = 50
+j = {"hello", "world"}
 print(j)
 
 
 """
-
+{'world', 'hello'}
 """

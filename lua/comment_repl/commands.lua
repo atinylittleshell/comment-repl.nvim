@@ -35,7 +35,13 @@ M.execute = function()
   repl_output_comment_block =
     core.ensure_margin_around_comment_block(bufnr, repl_output_comment_block)
 
-  repl.output_cursor = { repl_output_comment_block[1] + 1, 0 }
+  repl.output_extmark = vim.api.nvim_buf_set_extmark(
+    bufnr,
+    core.comment_repl_extmark_ns,
+    repl_output_comment_block[1],
+    0,
+    {}
+  )
 
   local code_lines =
     vim.api.nvim_buf_get_lines(bufnr, cell[1] - 1, repl_output_comment_block[1] - 1, false)
