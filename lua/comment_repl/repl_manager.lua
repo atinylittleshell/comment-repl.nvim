@@ -39,6 +39,7 @@ M.start = function(bufnr, repl_config)
   local process = vim.loop.spawn(repl_config.cmd, {
     args = repl_config.args,
     stdio = { stdin, stdout, stderr },
+    cwd = vim.fn.getcwd(),
   }, function()
     stdin:close()
     stdout:close()
